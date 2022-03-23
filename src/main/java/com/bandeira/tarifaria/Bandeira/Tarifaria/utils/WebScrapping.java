@@ -26,9 +26,9 @@ public class WebScrapping {
         for (int i = 1; i <= 12; i++){
             FlagDto flagDto = FlagDto.builder()
                     .color(String.valueOf(document.select("#id_sc_field_bandeira_" + i).first().childNode(0)))
-                    .month(String.valueOf(document.select("#id_sc_field_valor_" + i).first().childNode(0)))
-                    .year(String.valueOf(document.select("#id_sc_field_mes_" + i).first().childNode(0)))
-                    .value(String.valueOf(document.select("#id_sc_field_ano_" + i).first().childNode(0)))
+                    .month(String.valueOf(document.select("#id_sc_field_mes_" + i).first().childNode(0)))
+                    .year(String.valueOf(document.select("#id_sc_field_ano_" + i).first().childNode(0)))
+                    .value(String.valueOf(document.select("#id_sc_field_valor_" + i).first().childNode(0)))
                     .build();
 
             flagData.add(flagDto);
