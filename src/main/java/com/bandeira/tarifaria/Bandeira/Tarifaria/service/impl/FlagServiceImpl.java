@@ -33,21 +33,21 @@ public class FlagServiceImpl implements FlagService {
 
     private void saveData(List<FlagDto> data) {
         for(FlagDto flag: data) {
-            FlagModel flagFound = flagRepository.findByMonthTextAndYear(flag.getMonth(), flag.getYear());
-
-            if(flagFound == null){
-                FlagModel flagModel = FlagModel.builder()
-                        .flag(flag.getColor())
-                        .factor(flag.getValue())
-                        .monthText(flag.getMonth())
-                        .month(DateConverter.monthToText(flag.getMonth()))
-                        .year(flag.getYear())
-                        .build();
-
-                flagRepository.save(flagModel);
-            }
+            flagRepository
+                    .findByMonthTextAndYear(flag.getMonth(), flag.getYear())
+                    .orElseGet(() ->
+                            flagRepository.save(FlagModel.builder()
+                                    .flag(flag.getColor())
+                                    .factor(flag.getValue())
+                                    .monthText(flag.getMonth())
+                                    .month(DateConverter.monthToText(flag.getMonth()))
+                                    .year(flag.getYear())
+                                    .build()
+                            )
+                    );
         }
     }
+
 
     private List<FlagDto> getDataFromDatabase() {
         List<FlagModel> dataBaseData = flagRepository.findAllByOrderByYearDescMonthDesc();
