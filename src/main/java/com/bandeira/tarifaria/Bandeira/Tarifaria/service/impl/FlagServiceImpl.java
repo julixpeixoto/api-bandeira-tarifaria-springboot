@@ -6,6 +6,7 @@ import com.bandeira.tarifaria.Bandeira.Tarifaria.repository.FlagRepository;
 import com.bandeira.tarifaria.Bandeira.Tarifaria.service.FlagService;
 import com.bandeira.tarifaria.Bandeira.Tarifaria.utils.DateConverter;
 import com.bandeira.tarifaria.Bandeira.Tarifaria.utils.WebScrapping;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class FlagServiceImpl implements FlagService {
     @Autowired
     WebScrapping webScrapping;
@@ -24,14 +26,11 @@ public class FlagServiceImpl implements FlagService {
 
     @Override
     public ResponseEntity<?> getData() throws IOException {
-        List<FlagDto> data = webScrapping.getData();
-        saveData(data);
         List<FlagDto> flags = getDataFromDatabase();
-
         return ResponseEntity.ok().body(flags);
     }
 
-    private void saveData(List<FlagDto> data) {
+    public void saveData(List<FlagDto> data) {
         for(FlagDto flag: data) {
             flagRepository
                     .findByMonthTextAndYear(flag.getMonth(), flag.getYear())
